@@ -39,7 +39,7 @@ void loop() {
     startTrigger();
     float distance = getDistance();
 		
-    int pos = abs(int((distancia / 10) - 10)); // obtiene la posicion del ultimo led que se encendera
+    int pos = abs(int((distance / 10) - 10)); // obtiene la posicion del ultimo led que se encendera
 						// ej int((35cm/10) -10) = |int(-6.5)| = 6, pos de led de 30cm 
 	
     ledsOff(pos);
