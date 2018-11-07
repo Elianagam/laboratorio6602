@@ -16,9 +16,9 @@
 
 const float vsound = 34300; // cm/s
 const int ledPins[] = {	LED100CM, LED90CM, LED80CM, LED70CM, LED60CM, 	// VERDE
-			LED50CM, LED40CM, LED30CM,			// AMARILLO
-    			LED20CM, LED10CM				// ROJO
-		      }; 
+                        LED50CM, LED40CM, LED30CM,			// AMARILLO
+                        LED20CM, LED10CM,				// ROJO
+			};
 int lenLeds = 10; 
 int max_distance = 100; 
 
@@ -26,7 +26,7 @@ void setup() {
     Serial.begin(9600);
 
     for(int i = 0; i < lenLeds; i++) {
-	pinMode(ledPins[i], OUTPUT);
+        pinMode(ledPins[i], OUTPUT);
     }
 
     pinMode(TRIGGER, OUTPUT);
@@ -40,26 +40,26 @@ void loop() {
     float distance = getDistance();
 		
     int pos = abs(int((distance / 10) - 10)); // obtiene la posicion del ultimo led que se encendera
-						// ej int((35cm/10) -10) = |int(-6.5)| = 6, pos de led de 30cm 
+					    // ej int((35cm/10) -10) = |int(-6.5)| = 6, pos de led de 40cm
 	
     ledsOff(pos);
 
-    if(distance <= max_len) { 
-	// si la distancia es menor a 100 se encienden los leds
-    	ledsOn(distance);
+    if(distance <= max_distance) {
+        // si la distancia es menor a 100 se encienden los leds
+	ledsOn(pos);
     }
 }
 
 void ledsOff(int pos) {
     //apago los leds que correspondan a una distancia menor a la posicion actual
     for(int i = pos; i < lenLeds ; i++) {
-	digitalWrite(ledPin[i], LOW);
+        digitalWrite(ledPins[i], LOW);
     }
 }
 
 void ledsOn(int pos) {
     for(int i = 0; i < pos; i++) {
-	digitalWrite(ledPin[i], HIGH);
+	digitalWrite(ledPins[i], HIGH);
     }
 }
 
