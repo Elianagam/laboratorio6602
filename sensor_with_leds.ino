@@ -41,7 +41,7 @@ void loop() {
 		
     int pos = abs(int((distance / 10) - 10)); // obtiene la posicion del ultimo led que se encendera
 					    // ej int((35cm/10) -10) = |int(-6.5)| = 6, pos de led de 40cm
-	
+    Serial.print(distance,": ",pos, "\n");
     ledsOff(pos);
 
     if(distance <= max_distance) {
@@ -53,21 +53,20 @@ void loop() {
 void ledsOff(int pos) {
     //apago los leds que correspondan a una distancia menor a la posicion actual
     for(int i = pos; i < lenLeds ; i++) {
-        digitalWrite(ledPins[i], LOW);
+        digitalWrite(ledPins[i], HIGH);
     }
 }
 
 void ledsOn(int pos) {
-    for(int i = 0; i < pos; i++) {
-	digitalWrite(ledPins[i], HIGH);
+    for(int i = 0; i <= pos; i++) {
+	digitalWrite(ledPins[i], LOW);
     }
 }
 
 float getDistance() {
     unsigned long time = pulseIn(ECHO, HIGH); // en microsegundos
-    float distance = tiempo * vsound * 10^6 / 2; 
-    Serial.print(distance + "cm \n");
-    delay(500);
+    float distance = (time * vsound * 0.000001) / 2.00; 
+    delay(300);
 
     return distance;
 }
