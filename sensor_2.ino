@@ -21,8 +21,8 @@ const int ledPins[] = { LED100CM, LED90CM, LED80CM, LED70CM, LED60CM,   // VERDE
                         };
 int lenLeds = 10;
 int max_distance = 100;
-float last_distance = 0.00;
-int last_pos = 0;
+float last_distance;
+int last_pos;
 
 void setup() {
     Serial.begin(9600);
@@ -33,8 +33,9 @@ void setup() {
 
     pinMode(TRIGGER, OUTPUT);
     pinMode(ECHO, INPUT);
-
+    last_distance = 0.00;
     ledsOff(0); //comienza con todos los leds apagados
+    last_pos = 0;
 }
 
 void loop() {
@@ -45,9 +46,9 @@ void loop() {
                                             // ej int((35cm/10) -10) = |int(-6.5)| = 6, pos de led de 40cm
     Serial.print(distance,": ",pos, "\n");
     if(last_distance == distance) {
-    	// posiblemente si no choco contra nada la ultima señal no va a variar porque no pudo ser recibida
-	// si no hay nada apago todos los leds, La nueva distancia siempre va a variar en los decimales. funciona??
-        ledsOff(0);
+	// verificar que las distancias decimales no sean las mismas, porque esto no funcionaria
+	// o se podria hacer una verificacion dependiendo que valor recibe cuando no choca con nada
+	ledsOff(0);
     }
     else {
         ledsOff(pos);
@@ -63,7 +64,8 @@ void loop() {
 
 void ledsOff(int pos) {
     //apago los leds que correspondan a una distancia menor a la posicion actual
-    for(int i = pos; i < last_pos ; i++) {
+    // no uso lenLeds ya que no va a funcionar la primer vez que entre y no puedo seterar nada en el loop 
+    for(int i = pos; i < lenLeds ; i++) {
         digitalWrite(ledPins[i], HIGH);
     }
 }
