@@ -22,7 +22,8 @@ const int ledPins[] = { LED100CM, LED90CM, LED80CM, LED70CM, LED60CM,   // VERDE
 int lenLeds = 10;
 int max_distance = 100;
 float last_distance;
-int last_pos;
+int init_pos;
+int end_pos;
 
 void setup() {
     Serial.begin(9600);
@@ -34,8 +35,9 @@ void setup() {
     pinMode(TRIGGER, OUTPUT);
     pinMode(ECHO, INPUT);
     last_distance = 0.00;
+    init_pos = 0;
+    end_pos = lenLeds;
     ledsOff(0); //comienza con todos los leds apagados
-    last_pos = 0;
 }
 
 void loop() {
@@ -58,20 +60,20 @@ void loop() {
         // si la distancia es menor a 100 se encienden los leds
         ledsOn(pos);
         last_distance = distance;
-	last_pos = pos;
+	end_pos = init_pos = pos;
     }
 }
 
 void ledsOff(int pos) {
     //apago los leds que correspondan a una distancia menor a la posicion actual
-    // no uso lenLeds ya que no va a funcionar la primer vez que entre y no puedo seterar nada en el loop 
-    for(int i = pos; i < lenLeds ; i++) {
+    //for(int i = pos; i < lenLeds ; i++) {
+    for(int i = pos; i < end_pos ; i++) { //probar con esta linea
         digitalWrite(ledPins[i], HIGH);
     }
 }
 
 void ledsOn(int pos) {
-    for(int i = last_pos; i <= pos; i++) {
+    for(int i = init_pos; i <= pos; i++) {
         digitalWrite(ledPins[i], LOW);
     }
 }
